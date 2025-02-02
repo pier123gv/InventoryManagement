@@ -27,6 +27,7 @@ public class ClientListener implements Runnable{
     }
     
     public  void start(){
+        /*
         try {
             SSLServerSocketFactory socketFactory = (SSLServerSocketFactory)SSLServerSocketFactory.getDefault();
             SSLServerSocket serverSocket = (SSLServerSocket)socketFactory.createServerSocket(port);
@@ -39,6 +40,7 @@ public class ClientListener implements Runnable{
                 DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream());
                 DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream());
                 
+                
                 String clientMessage = inputStream.readUTF().trim();
                 String[] parts = clientMessage.split(":");
                 System.out.println("Message: "+clientMessage);
@@ -50,9 +52,11 @@ public class ClientListener implements Runnable{
                 System.out.println("Connection closed");
                 
             }
+            
         } catch (IOException ex) {
             System.out.println("Error: "+ex.getMessage());
         }
+*/
     }
     
     

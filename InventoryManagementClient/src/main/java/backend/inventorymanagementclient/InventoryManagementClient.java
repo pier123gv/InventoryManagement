@@ -18,7 +18,7 @@ import backend.inventorymanagementclient.utils.CSVExporter;
 public class InventoryManagementClient {
     
     private final int port = 9090;
-    
+    private final String serverAddress = "";
     private ProductDatabase db;
     private ProvisionaryComandLineInterface ui;
     private CSVExporter exporter;
@@ -31,7 +31,7 @@ public class InventoryManagementClient {
         ui = new ProvisionaryComandLineInterface(this);
         exporter = new CSVExporter(this,fileName);
         handler = new RequestHandler(this);
-        socket = new ClientSocket(handler,port);
+        socket = new ClientSocket(handler,serverAddress,port);
         listener = new ClientListener(handler,port);
         
     }

@@ -5,3 +5,4 @@
 *.p12
 /InventoryManagementCLient/target/
 /InventoryManagementServer/target/
+/InventoryManagementClient/target/
