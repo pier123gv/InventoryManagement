@@ -4,30 +4,33 @@
  */
 package com.mycompany.inventorymanagementclient.utils;
 
-import com.mycompany.inventorymanagementclient.model.Product;
-import com.mycompany.inventorymanagementclient.model.ProductDatabase;
+import com.mycompany.inventorymanagementclient.InventoryManagementClient;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author isabe, pier
  */
 public class CSVExporter {
-    private String fileName = "database.csv";
-    private final ArrayList<Product> Inventory;
+    private String fileName;
+    private final InventoryManagementClient management;
 
-    public CSVExporter(ProductDatabase DB) {
-        this.Inventory = DB.getInventory();
+    public CSVExporter(InventoryManagementClient management, String fileName) {
+        this.management = management;
+        this.fileName = fileName;
     }
     
-    public void exportarCSV() throws IOException {
+    public boolean exportCSV() {
         try (FileWriter writer = new FileWriter(fileName)) {
-            writer.append("productCode,productName,productAmount\n");
-            for (Product product : Inventory) {
-                writer.append(product.toString()).append("\n");
-            }
+            writer.append(management.getDb().toString());
+            return true;
+        } catch (IOException ex) {
+            Logger.getLogger(CSVExporter.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
 }

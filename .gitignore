@@ -1,0 +1,6 @@
+/TCPDemoCLient/target/
+/TCPDemoServer/target/
+# Ignorar todos los archivos .properties
+*.properties
+*.p12
+/InventoryManagementCLient/target/

@@ -11,12 +11,12 @@ package com.mycompany.inventorymanagementclient.model;
 public class Product {
     private int productCode;
     private String productName;
-    private int productAmount;
+    private int productStock;
 
     public Product(int productCode, String productName, int productAmount) {
         this.productCode = productCode;
         this.productName = productName;
-        this.productAmount = productAmount;
+        this.productStock = productAmount;
     }
 
     public int getProductCode() {
@@ -27,21 +27,31 @@ public class Product {
         return productName;
     }
 
-    public int getProductAmount() {
-        return productAmount;
+    public int getProductStock() {
+        return productStock;
     }
     
+    /**
+     * Sells the amount given if there's enough stock;
+     * @param sellAmount The amount to sell.
+     * @return True if it could be done, False otherwise
+     */
     public boolean sellProduct(int sellAmount){
-        return sellAmount <= productAmount && (productAmount -= sellAmount) >= 0;
+        return sellAmount <= productStock && (productStock -= sellAmount) >= 0;
     }
+    
     /**
     * String representation of the product using the format code,name,amount 
     * and changing comas in the name for ## to bypass CSV confusion.
-    * @return String in format [productCode],[productName],[productAmount]
+    * @return String in format [productCode],[productName],[productStock]
     */
     @Override
     public String toString() {
-        return (productCode+","+productName.replace(",","##")+","+productAmount);
+        return (productCode+","+productName.replace(",","##")+","+productStock);
     }
     
+    public boolean restock(int restockAmount){
+        productStock += restockAmount;
+        return true;
+    }
 }
