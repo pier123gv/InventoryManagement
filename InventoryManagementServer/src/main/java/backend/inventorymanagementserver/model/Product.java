@@ -47,7 +47,7 @@ public class Product {
     */
     @Override
     public String toString() {
-        return (productCode+","+productName.replace(",","##")+","+productStock);
+        return (productCode+","+productName.replace(",","##")+","+productStock+",");
     }
     
     public boolean restock(int restockAmount){

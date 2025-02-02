@@ -66,7 +66,7 @@ public class CommandLineInterface implements Runnable {
             }
             case 4 -> {
                 System.out.println("Current Inventory:");
-                System.out.println(management.getDb().toString().replace("##",","));
+                System.out.println(management.showDatabaseContent().replace("##",","));
                 return true;
             }
             case 5 -> {

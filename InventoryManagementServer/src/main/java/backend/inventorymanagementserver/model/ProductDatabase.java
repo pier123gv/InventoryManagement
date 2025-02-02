@@ -82,8 +82,21 @@ public class ProductDatabase {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        for(Product product : Inventory) sb.append(product.toString());
+        return sb.toString();
+    }
+    public String toStringLineJump() {
+        StringBuilder sb = new StringBuilder();
         for(Product product : Inventory) sb.append(product.toString()+"\n");
         return sb.toString();
     }
-    
+    public void populate(String content){
+        System.out.println("Populating db");
+        String data[] = content.split(",");
+        for(int i = 0; i<data.length & data.length>=3; i=i+3){
+            Product newProduct = new Product(Integer.parseInt(data[i].trim()),data[i+1].trim().replace("##",","),Integer.parseInt(data[i+2].trim()));
+            Inventory.add(newProduct);
+        }
+        System.out.println("File lines: "+data.length/3 + " Entries: "+Inventory.size());
+    }
 }

@@ -4,3 +4,4 @@
 *.properties
 *.p12
 /InventoryManagementCLient/target/
+/InventoryManagementServer/target/

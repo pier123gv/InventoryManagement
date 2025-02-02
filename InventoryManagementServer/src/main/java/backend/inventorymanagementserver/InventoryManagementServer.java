@@ -21,6 +21,7 @@ public class InventoryManagementServer {
         db = new ProductDatabase();
         ui = new CommandLineInterface(this);
         exporter = new CSVUtils(this,fileName);
+        db.populate(exporter.readCSVToString());
     }
     
     public boolean exportCSV() {
@@ -45,6 +46,9 @@ public class InventoryManagementServer {
     }
     public boolean restockProductInDB (Object productKey, int amount){
         return db.restockProduct(productKey, amount);
+    }
+    public String showDatabaseContent(){
+        return db.toStringLineJump(); //temporarily with line jumps.
     }
     // Main
     public static void main(String[] args) {
