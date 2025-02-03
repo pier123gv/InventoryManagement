@@ -64,6 +64,10 @@ public class ProductDatabase {
         if(searchProductCode(productName) !=-1) return false;
         return Inventory.add(new Product(lastProductCode()+1,productName,productStock));
     }
+    
+    public boolean addProduct(int productCode, String productName, int productStock){
+        return Inventory.add(new Product(productCode,productName,productStock));
+    }
 
     public ArrayList<Product> getInventory() {
         return Inventory;
@@ -85,5 +89,13 @@ public class ProductDatabase {
         for(Product product : Inventory) sb.append(product.toString()+"\n");
         return sb.toString();
     }
-    
+    public boolean populate(String content){
+        System.out.println("Populating db");
+        String data[] = content.split(",");
+        for(int i = 0; i<data.length & data.length>=3; i=i+3){
+            Product newProduct = new Product(Integer.parseInt(data[i].trim()),data[i+1].trim().replace("##",","),Integer.parseInt(data[i+2].trim()));
+            Inventory.add(newProduct);
+        }
+        return true;
+    }
 }

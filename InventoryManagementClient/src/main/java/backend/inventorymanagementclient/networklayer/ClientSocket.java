@@ -6,32 +6,66 @@ package backend.inventorymanagementclient.networklayer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 
 /**
  *
  * @author pier
  */
-public class ClientSocket implements Runnable{
+public class ClientSocket {
 
-    private RequestHandler handler;
     private String serverAddress;
     private int port;
     private SSLSocket clientSocket;
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
 
-    public ClientSocket(RequestHandler handler, String serverAddress, int port) {
-        this.handler = handler;
+    public ClientSocket(String serverAddress, int port) {
         this.serverAddress = serverAddress;
         this.port = port;
     }
-    
-    
-    
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+    public void connect() throws IOException {
+        SSLSocketFactory socketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+        clientSocket = (SSLSocket) socketFactory.createSocket(serverAddress, port);
+        System.out.println("Connection established");
+        inputStream = new DataInputStream(clientSocket.getInputStream());
+        outputStream = new DataOutputStream(clientSocket.getOutputStream());
     }
+
+    public String sendMessage(String jsonMessage) {
+        String response = "Error";
+        try {
+            connect();
+            System.out.println("Sending: " + jsonMessage);
+            outputStream.writeUTF(jsonMessage);
+            response = inputStream.readUTF();
+            System.out.println("Response: " + response);
+        } catch (IOException ex) {
+            System.out.println("Client error: " + ex.getMessage());
+        } finally {
+            closeConnection();
+        }
+        return response;
+    }
+
+    public void closeConnection() {
+        try {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (outputStream != null) {
+                outputStream.close();
+            }
+            if (clientSocket != null) {
+                clientSocket.close();
+            }
+        } catch (IOException ex) {
+            System.out.println("Error closing connection: " + ex.getMessage());
+        }
+    }
+    
     
 }

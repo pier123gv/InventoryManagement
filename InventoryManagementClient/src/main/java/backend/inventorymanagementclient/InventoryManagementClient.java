@@ -23,7 +23,6 @@ public class InventoryManagementClient {
     private ProvisionaryComandLineInterface ui;
     private CSVExporter exporter;
     private String fileName = "database.csv";
-    private ClientSocket socket;
     private ClientListener listener;
     private RequestHandler handler;
     public InventoryManagementClient() {
@@ -31,7 +30,6 @@ public class InventoryManagementClient {
         ui = new ProvisionaryComandLineInterface(this);
         exporter = new CSVExporter(this,fileName);
         handler = new RequestHandler(this);
-        socket = new ClientSocket(handler,serverAddress,port);
         listener = new ClientListener(handler,port);
         
     }
@@ -48,8 +46,11 @@ public class InventoryManagementClient {
     public boolean addProductToDB(String productName, int productStock){
         return db.addProduct(productName, productStock);
     }
-    
+    public boolean addProductToDB(int productCode, String productName, int productStock){
+        return db.addProduct(productCode, productName, productStock);
+    }
     public boolean sellProductInDB(Object productKey, int amount){
+
         return db.sellProduct(productKey, amount);
     }
 
@@ -58,6 +59,9 @@ public class InventoryManagementClient {
     }
     public boolean restockProductInDB (Object productKey, int amount){
         return db.restockProduct(productKey, amount);
+    }
+    public boolean populateDB(String content){
+        return db.populate(content);
     }
     
     
