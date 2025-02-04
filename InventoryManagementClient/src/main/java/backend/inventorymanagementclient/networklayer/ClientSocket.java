@@ -66,6 +66,7 @@ public class ClientSocket {
             connect();
             System.out.println("Sending: " + jsonMessage);
             outputStream.writeUTF(jsonMessage);
+            outputStream.flush();
             response = inputStream.readUTF();
             System.out.println("Response: " + response);
         } catch (java.net.SocketTimeoutException ex) {

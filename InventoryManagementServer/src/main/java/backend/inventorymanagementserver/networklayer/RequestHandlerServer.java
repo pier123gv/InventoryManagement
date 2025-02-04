@@ -23,6 +23,7 @@ import javax.net.ssl.SSLServerSocketFactory;
 import org.json.JSONObject;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import javax.net.ssl.SSLSocket;
 
 /**
  *
@@ -107,37 +108,36 @@ public class RequestHandlerServer {
     }
 
     private void handleClient(Socket clientSocket) {
-        try (DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream());
-             DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream())) {
+    try (DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream());
+         DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream())) {
 
-            String clientMessage = inputStream.readUTF();
-            System.out.println("Client message: " + clientMessage);
+        String clientMessage = inputStream.readUTF();
+        System.out.println("Client message: " + clientMessage);
 
-            messageQueue.put(new ClientRequest(clientMessage, clientSocket, outputStream));
+        // Pasar el outputStream a la cola en lugar de crear uno nuevo
+        messageQueue.put(new ClientRequest(clientMessage, clientSocket, outputStream));
 
-        } catch (IOException ex) {
-            Logger.getLogger(RequestHandlerServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(RequestHandlerServer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    } catch (IOException ex) {
+        Logger.getLogger(RequestHandlerServer.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (InterruptedException ex) {
+        Logger.getLogger(RequestHandlerServer.class.getName()).log(Level.SEVERE, null, ex);
+        Thread.currentThread().interrupt(); // Restablecer el estado de interrupción
     }
+}
 
-    private void processMessages() {
-    while (true) {
+private void processMessages() {
+    while (!Thread.currentThread().isInterrupted()) {
         try {
-            // Extraer y procesar la petición en orden de llegada
             ClientRequest request = messageQueue.take();
             String clientMessage = request.getMessage();
-            SSLSocket clientSocket = (SSLSocket) request.getClientSocket();  // Correcto tipo de socket
-            DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream());
+            SSLSocket clientSocket = (SSLSocket) request.getClientSocket();
+            DataOutputStream outputStream = request.getOutputStream(); // Usar el outputStream existente
 
-            // Procesar el mensaje recibido
             String response = handleRequest(clientMessage);
             System.out.println("Processing message: " + clientMessage + " -> Response: " + response);
 
-            // Enviar respuesta al cliente
             outputStream.writeUTF(response);
-            outputStream.flush();  // Asegúrate de limpiar el buffer antes de cerrar la conexión
+            outputStream.flush();
 
             // Cerrar la conexión después de enviar la respuesta
             outputStream.close();
@@ -148,9 +148,9 @@ public class RequestHandlerServer {
             System.out.println("Error processing message: " + ex.getMessage());
         } catch (InterruptedException ex) {
             Logger.getLogger(RequestHandlerServer.class.getName()).log(Level.SEVERE, null, ex);
+            Thread.currentThread().interrupt(); // Restablecer el estado de interrupción
         }
     }
 }
 
-    }
 }
