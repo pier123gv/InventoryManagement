@@ -308,7 +308,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_BshowActionPerformed
 
     private void BdeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BdeleteActionPerformed
-        Delete Vdelete = new Delete();
+        Delete Vdelete = new Delete(this);
         Vdelete.setVentana(this);
         Vdelete.setVisible(true);
         this.setVisible(false);

@@ -91,6 +91,16 @@ int productIndex = lookupProduct(key);
     return true;
     }
     
+    public String deleteProductName(String key){ // Recieves either code or name
+    int productIndex = lookupProduct(key);
+    
+    if (productIndex == -1) return "No encontrado"; // Producto no encontrado
+
+    Inventory.remove(productIndex);
+
+    return "SUCCESS";
+    }
+    
 public String editProduct(int productCode, String newName, Integer newStock, Float newPrice, String newDescription) {
     int productIndex = lookupProduct(productCode);
     

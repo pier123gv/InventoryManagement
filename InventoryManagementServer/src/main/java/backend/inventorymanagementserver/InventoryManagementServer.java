@@ -42,6 +42,9 @@ public class InventoryManagementServer {
     public boolean deleteProductInDB(Object productKey){
         return db.deleteProduct(productKey);
     }
+    public String deleteProductNameInDB(String name){
+        return db.deleteProductName(name);
+    }
     public String sellProductInDBbyName(String productName, int sellAmount){
         return db.sellProductByName(productName, sellAmount);
     }

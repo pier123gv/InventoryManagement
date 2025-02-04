@@ -73,6 +73,12 @@ public class InventoryManagementClient {
         String request = handler.formatRequest("REQUESTPRODUCT", args);
         return handler.handleRequest(request);
     }
+        public String deleteNameProductfromDB (String productName){
+        String[] args = {productName};
+        String request = handler.formatRequest("DELETEPRODUCTNAME", args);
+        return handler.handleRequest(request);
+    }
+        
     public String requestDB (){
         String[] args = {};
         String request = handler.formatRequest("REQUEST", args);

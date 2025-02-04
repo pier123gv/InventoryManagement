@@ -4,6 +4,10 @@
  */
 package backend.inventorymanagementclient.GUI;
 
+import backend.inventorymanagementclient.GUI.VentanaPrincipal;
+import backend.inventorymanagementclient.InventoryManagementClient;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author isabela
@@ -14,12 +18,13 @@ public class Delete extends javax.swing.JFrame {
     /**
      * Creates new form Delete
      */
-    public Delete() {
+    public Delete(VentanaPrincipal ventana) {
+         this.ventana = ventana;
         initComponents();
     }
     
     public void setVentana(VentanaPrincipal ventana){
-        this.ventana = ventana;
+  
         ventana.setVisible(true);
         this.setVisible(false);
     }
@@ -35,11 +40,10 @@ public class Delete extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         Tname = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        Bdelete = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(542, 277));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(173, 216, 230));
@@ -55,7 +59,12 @@ public class Delete extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Eliminar");
+        Bdelete.setText("Eliminar");
+        Bdelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BdeleteActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Atras");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -77,7 +86,7 @@ public class Delete extends javax.swing.JFrame {
                             .addComponent(jLabel1)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(165, 165, 165)
-                        .addComponent(jButton1)
+                        .addComponent(Bdelete)
                         .addGap(18, 18, 18)
                         .addComponent(jButton2)))
                 .addContainerGap(195, Short.MAX_VALUE))
@@ -91,7 +100,7 @@ public class Delete extends javax.swing.JFrame {
                 .addComponent(Tname, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(Bdelete)
                     .addComponent(jButton2))
                 .addContainerGap(62, Short.MAX_VALUE))
         );
@@ -115,44 +124,41 @@ public class Delete extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Delete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Delete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Delete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Delete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Delete().setVisible(true);
-            }
-        });
+    private void BdeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BdeleteActionPerformed
+    String productName = Tname.getText().trim();
+    
+    if (productName.isEmpty() || productName.equals("Nombre del Producto")) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un nombre de producto válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
     }
 
+    // Crear instancia de InventoryManagementClient para comunicarse con el servidor
+    InventoryManagementClient client = new InventoryManagementClient();
+    
+    // Buscar el producto en la base de datos
+    String response = client.requestDB();
+    
+
+    // Eliminar el producto
+    String deleteResponse = client.deleteNameProductfromDB(productName);
+
+    // Mostrar el resultado
+    if (deleteResponse.contains("SUCCESS") || deleteResponse.contains("éxito")) {
+        JOptionPane.showMessageDialog(this, "Producto eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al eliminar el producto: " + deleteResponse, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    ventana.setVisible(true);
+    this.setVisible(false);
+
+    }//GEN-LAST:event_BdeleteActionPerformed
+
+    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Bdelete;
     private javax.swing.JTextField Tname;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

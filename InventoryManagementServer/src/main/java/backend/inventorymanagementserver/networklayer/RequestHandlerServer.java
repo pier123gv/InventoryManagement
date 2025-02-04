@@ -61,6 +61,11 @@ public class RequestHandlerServer {
                 productCode = Integer.parseInt(jsonRequest.getString("argument0"));
                 response = management.searchProductInDatabase(productCode);
                 break;
+                
+            case "DELETEPRODUCTNAME":
+                String pName = jsonRequest.getString("argument0");
+                response = management.deleteProductNameInDB(pName);
+                break;
             case "TEST":
                 response = management.testConnection();
                 break;
