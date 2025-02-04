@@ -30,7 +30,9 @@ public class InventoryManagementClient {
     }
     
     public boolean exportCSV() {
-        return exporter.exportCSV();
+        String[] args = {};
+        String productos = handler.formatRequest("REQUEST", args);
+        return exporter.exportCSV(productos);
     }
     
     public void start(){

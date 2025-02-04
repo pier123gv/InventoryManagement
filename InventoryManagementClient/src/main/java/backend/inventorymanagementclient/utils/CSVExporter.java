@@ -24,15 +24,13 @@ public class CSVExporter {
         this.fileName = fileName;
     }
     
-    public boolean exportCSV() {
-        /*try (FileWriter writer = new FileWriter(fileName)) {
-            writer.append(management.getDb().toString());
+    public boolean exportCSV(String products) {
+        try (FileWriter writer = new FileWriter(fileName)) {
+            writer.append(products);
             return true;
         } catch (IOException ex) {
             Logger.getLogger(CSVExporter.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
-    */
-        return true;
-}}
+}
