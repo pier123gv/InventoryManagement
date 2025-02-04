@@ -4,6 +4,7 @@
  */
 package backend.inventorymanagementclient.GUI;
 
+import backend.inventorymanagementclient.InventoryManagementClient;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -13,13 +14,18 @@ import javax.swing.JOptionPane;
  * @author isabela
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
-
+    private InventoryManagementClient management;
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         initComponents();
+        management = new InventoryManagementClient();
     }
+    
+    public InventoryManagementClient getManagementClient() {
+    return this.management;  // Retorna la instancia del cliente de inventario
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -288,7 +294,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void BcrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BcrearActionPerformed
         // TODO add your handling code here:
-        Create Vcreate = new Create();
+        Create Vcreate = new Create(this);
         Vcreate.setVentana(this);
         Vcreate.setVisible(true);
         this.setVisible(false);
@@ -354,6 +360,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                InventoryManagementClient management = new InventoryManagementClient();
+
                 new VentanaPrincipal().setVisible(true);
             }
         });
