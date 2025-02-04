@@ -4,7 +4,7 @@
 
 package backend.inventorymanagementclient;
 
-import backend.inventorymanagementclient.networklayer.RequestHandler;
+import backend.inventorymanagementclient.networklayer.RequestHandlerClient;
 import backend.inventorymanagementclient.userinterface.ImprovedCommandLineInterface;
 import backend.inventorymanagementclient.utils.CSVExporter;
 
@@ -20,12 +20,12 @@ public class InventoryManagementClient {
     
     private ImprovedCommandLineInterface ui;
     private CSVExporter exporter;
-    private RequestHandler handler;
+    private RequestHandlerClient handler;
     
     public InventoryManagementClient() {
         ui = new ImprovedCommandLineInterface(this);
         exporter = new CSVExporter(this,fileName);
-        handler = new RequestHandler(this);
+        handler = new RequestHandlerClient(this,serverAddress,port);
         
     }
     

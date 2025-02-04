@@ -5,7 +5,7 @@
 package backend.inventorymanagementserver;
 
 import backend.inventorymanagementserver.model.ProductDatabase;
-import backend.inventorymanagementserver.networklayer.RequestHandler;
+import backend.inventorymanagementserver.networklayer.RequestHandlerServer;
 import backend.inventorymanagementserver.userinterface.CommandLineInterface;
 import backend.inventorymanagementserver.utils.CSVUtils;
 
@@ -14,17 +14,18 @@ import backend.inventorymanagementserver.utils.CSVUtils;
  * @author isabe, pier
  */
 public class InventoryManagementServer {
+    private final int port = 9090;
     private ProductDatabase db;
     private CommandLineInterface ui;
     private CSVUtils exporter;
     private String fileName = "database.csv";
-    private RequestHandler handler;
+    private RequestHandlerServer handler;
     public InventoryManagementServer() {
         db = new ProductDatabase();
         ui = new CommandLineInterface(this);
         exporter = new CSVUtils(this,fileName);
         db.populate(exporter.readCSVToString());
-        handler = new RequestHandler(this);
+        handler = new RequestHandlerServer(this, port);
         handler.start();
     }
     

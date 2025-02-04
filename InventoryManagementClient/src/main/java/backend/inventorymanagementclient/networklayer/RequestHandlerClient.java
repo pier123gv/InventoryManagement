@@ -17,12 +17,16 @@ import org.json.JSONObject;
  *
  * @author pier
  */
-public class RequestHandler{
+public class RequestHandlerClient{
     private InventoryManagementClient management;
     private ClientSocket clientSocket;
+    private String serverAddress;
+    private int port;
     
-    public RequestHandler(InventoryManagementClient management) {
+    public RequestHandlerClient(InventoryManagementClient management, String serverAddress, int port) {
         this.management = management;
+        this.serverAddress=serverAddress;
+        this.port = port;
     }
     public String formatRequest(String operation, String[] arguments) {
         JSONObject jsonRequest = new JSONObject();
@@ -37,15 +41,12 @@ public class RequestHandler{
         try {
             p.load(new FileInputStream(new File("configuration.properties")));
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequestHandlerClient.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequestHandlerClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         String response;
-        JSONObject jsonRequest = new JSONObject(jsonMessage);
-        String ip= jsonRequest.getString("ip");
-        int port = jsonRequest.getInt("port");
         
         String sslRoute = p.getProperty("SSL_CERTIFICATE_ROUTE");
         String sslPassword = p.getProperty("SSL_PASSWORD");
@@ -57,7 +58,7 @@ public class RequestHandler{
         System.setProperty("javax.net.ssl.trustStoreType", "PKCS12");
         
         
-        clientSocket = new ClientSocket(ip,port);
+        clientSocket = new ClientSocket(serverAddress,port);
         response = clientSocket.sendMessage(jsonMessage);
         
         return response;

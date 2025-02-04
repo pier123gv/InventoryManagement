@@ -7,8 +7,12 @@ package backend.inventorymanagementserver.networklayer;
 import backend.inventorymanagementserver.InventoryManagementServer;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -24,13 +28,14 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  * @author pier
  */
-public class RequestHandler {
+public class RequestHandlerServer {
     private InventoryManagementServer management;
     private int port;
     private static final BlockingQueue<ClientRequest> messageQueue = new LinkedBlockingQueue<>();
 
-    public RequestHandler(InventoryManagementServer management) {
+    public RequestHandlerServer(InventoryManagementServer management, int port) {
         this.management = management;
+        this.port = port;
     }
 
     public String handleRequest(String jsonMessage){
@@ -68,6 +73,19 @@ public class RequestHandler {
         ExecutorService clientHandlerPool = Executors.newFixedThreadPool(10); // Pool para manejar clientes
 
         try {
+            Properties p = new Properties();
+            p.load(new FileInputStream(new File("configuration.properties")));     
+            String response;
+        
+            String sslRoute = p.getProperty("SSL_CERTIFICATE_ROUTE");
+            String sslPassword = p.getProperty("SSL_PASSWORD");
+            System.setProperty("javax.net.ssl.keyStore",sslRoute);
+            System.setProperty("javax.net.ssl.keyStorePassword",sslPassword);
+            System.setProperty("javax.net.ssl.keyStoreType", "PKCS12");
+            System.setProperty("javax.net.ssl.trustStore", sslRoute);
+            System.setProperty("javax.net.ssl.trustStorePassword", sslPassword);
+            System.setProperty("javax.net.ssl.trustStoreType", "PKCS12");
+        
             // Configuración del socket SSL
             SSLServerSocketFactory socketFactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
             SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(port);
@@ -97,9 +115,9 @@ public class RequestHandler {
             messageQueue.put(new ClientRequest(clientMessage, clientSocket, outputStream));
 
         } catch (IOException ex) {
-            Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequestHandlerServer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
-            Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequestHandlerServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -127,7 +145,7 @@ public class RequestHandler {
             } catch (IOException ex) {
                 System.out.println("Error processing message: " + ex.getMessage());
             } catch (InterruptedException ex) {
-                Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RequestHandlerServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
