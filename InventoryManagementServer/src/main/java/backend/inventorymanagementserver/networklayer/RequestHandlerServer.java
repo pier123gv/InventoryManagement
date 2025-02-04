@@ -1,6 +1,7 @@
 package backend.inventorymanagementserver.networklayer;
 
 import backend.inventorymanagementserver.InventoryManagementServer;
+import backend.inventorymanagermentserver.logging.LoggerServer;
 import org.json.JSONObject;
 
 import javax.net.ssl.SSLServerSocket;
@@ -15,10 +16,11 @@ import java.util.Properties;
 public class RequestHandlerServer {
     private InventoryManagementServer management;
     private int port;
-
+    private LoggerServer logger;
     public RequestHandlerServer(InventoryManagementServer management, int port) {
         this.management = management;
         this.port = port;
+        logger = new LoggerServer("logfile.csv");
     }
 
     public String handleRequest(String jsonMessage) {
@@ -71,6 +73,7 @@ public class RequestHandlerServer {
                 break;
             default:
         }
+        logger.createLogEntry(jsonMessage+", "+response);
         return response;
     }
 
