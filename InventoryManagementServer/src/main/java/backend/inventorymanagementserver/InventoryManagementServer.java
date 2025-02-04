@@ -36,6 +36,7 @@ public class InventoryManagementServer {
     
     
     public String addProductToDB(String productName, int productStock, float productPrice, String productDescription){
+        if (productStock < 0 || productPrice<0) return "No se aceptan precios ni stock negativos";
         return db.addProduct(productName,productStock,productPrice,productDescription);
     }
     

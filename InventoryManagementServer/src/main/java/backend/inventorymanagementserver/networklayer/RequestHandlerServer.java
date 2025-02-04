@@ -78,7 +78,7 @@ public class RequestHandlerServer {
                 break;
             default:
         }
-        logger.createLogEntry(jsonMessage+", "+response);
+        logger.createLogEntry("Entry: {"+jsonMessage+", "+response+"}");
         return response;
     }
     

@@ -14,7 +14,7 @@ import backend.inventorymanagementclient.utils.CSVExporter;
 public class InventoryManagementClient {
     
     private final int port = 9090;
-    private final String serverAddress = "172.24.157.33";
+    private final String serverAddress = "127.0.0.1";
     private final String fileName = "database.csv";
     
     private CSVExporter exporter;
@@ -28,7 +28,8 @@ public class InventoryManagementClient {
     
     public boolean exportCSV() {
         String[] args = {};
-        String productos = handler.formatRequest("REQUEST", args);
+        String request = handler.formatRequest("REQUEST", args);
+        String productos = handler.handleRequest(request);
         return exporter.exportCSV(productos);
     }
     
