@@ -20,7 +20,11 @@ public class RequestHandlerServer {
         this.management = management;
         this.port = port;
     }
-
+    /**
+     * 
+     * @param jsonMessage
+     * @return 
+     */
     public String handleRequest(String jsonMessage) {
         String response = "ERROR", operation, productName, productDescription;
         int productCode, productStock, productAmount;
@@ -73,7 +77,11 @@ public class RequestHandlerServer {
         }
         return response;
     }
-
+    /**
+     * Inicia el servidor SSL 
+     * @param jsonMessage
+     * @return 
+     */
     public void start() {
         try {
             // Configuración SSL
@@ -106,7 +114,14 @@ public class RequestHandlerServer {
             System.out.println("Error: " + ex.getMessage());
         }
     }
-
+    
+    /**
+    * Maneja la comunicación con un cliente a través de un socket SSL.
+    * Lee un mensaje del cliente, lo procesa, envía una respuesta y cierra la conexión.
+    *
+    * @param clientSocket Socket SSL conectado al cliente.
+    * @throws IOException Si ocurre un error de E/S durante la comunicación.
+    */
     private void handleClient(SSLSocket clientSocket) {
         try (DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream());
              DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream())) {
