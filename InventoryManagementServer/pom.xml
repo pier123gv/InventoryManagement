@@ -9,7 +9,7 @@
         <dependency>
             <groupId>org.eclipse.scout.rt</groupId>
             <artifactId>org.eclipse.scout.json</artifactId>
-            <version>23.1.0-beta.4</version>
+            <version>24.2.17</version>
             <type>jar</type>
         </dependency>
     </dependencies>
