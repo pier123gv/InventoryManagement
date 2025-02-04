@@ -5,6 +5,7 @@
 package backend.inventorymanagementserver;
 
 import backend.inventorymanagementserver.model.ProductDatabase;
+import backend.inventorymanagementserver.networklayer.RequestHandler;
 import backend.inventorymanagementserver.userinterface.CommandLineInterface;
 import backend.inventorymanagementserver.utils.CSVUtils;
 
@@ -17,11 +18,14 @@ public class InventoryManagementServer {
     private CommandLineInterface ui;
     private CSVUtils exporter;
     private String fileName = "database.csv";
+    private RequestHandler handler;
     public InventoryManagementServer() {
         db = new ProductDatabase();
         ui = new CommandLineInterface(this);
         exporter = new CSVUtils(this,fileName);
         db.populate(exporter.readCSVToString());
+        handler = new RequestHandler(this);
+        handler.start();
     }
     
     public boolean exportCSV() {
@@ -33,6 +37,7 @@ public class InventoryManagementServer {
         uiThread.start();
     }
     
+    /*
     public boolean addProductToDB(String productName, int productStock){
         return db.addProduct(productName, productStock);
     }
@@ -49,6 +54,10 @@ public class InventoryManagementServer {
     }
     public String showDatabaseContent(){
         return db.toStringLineJump(); //temporarily with line jumps.
+    }
+*/
+    public String testConnection(){
+        return "Connection successfull";
     }
     // Main
     public static void main(String[] args) {

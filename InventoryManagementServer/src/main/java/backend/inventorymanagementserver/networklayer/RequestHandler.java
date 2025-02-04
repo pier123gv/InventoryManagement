@@ -32,22 +32,11 @@ public class RequestHandler {
     public RequestHandler(InventoryManagementServer management) {
         this.management = management;
     }
-    public String formatRequest(String senderIp, String recieverIp, int port, String operation, String arguments) {
-        JSONObject jsonRequest = new JSONObject();
-        jsonRequest.put("senderip", senderIp);
-        jsonRequest.put("recieverIp", recieverIp);
-        jsonRequest.put("port", port);
-        jsonRequest.put("operation", operation);
-        jsonRequest.put("arguments", arguments);
-        return jsonRequest.toString(4); 
-    }
-    
+
     public String handleRequest(String jsonMessage){
         String response = "Error", operation, arguments;
         String [] fields;
         JSONObject jsonRequest;
-        String ip;
-        int port;
         jsonRequest = new JSONObject(jsonMessage);
             operation = jsonRequest.getString("operation");
             switch (operation) { 
@@ -66,6 +55,9 @@ public class RequestHandler {
                     fields = arguments.split(",");
                     //result = management.addProductToDB(Integer.parseInt(fields[0]),fields[1].replace("##",","),Integer.parseInt(fields[2]));
                 break;
+                case "TEST":
+                    response = management.testConnection();
+                    break;
                 default:
                 }
             

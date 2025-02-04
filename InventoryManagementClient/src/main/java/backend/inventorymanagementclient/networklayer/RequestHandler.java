@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,11 +24,8 @@ public class RequestHandler{
     public RequestHandler(InventoryManagementClient management) {
         this.management = management;
     }
-    public String formatRequest(String senderIp, String recieverIp, int port, String operation, String arguments) {
+    public String formatRequest(String operation, String[] arguments) {
         JSONObject jsonRequest = new JSONObject();
-        jsonRequest.put("senderip", senderIp);
-        jsonRequest.put("recieverIp", recieverIp);
-        jsonRequest.put("port", port);
         jsonRequest.put("operation", operation);
         jsonRequest.put("arguments", arguments);
         return jsonRequest.toString(4); 
