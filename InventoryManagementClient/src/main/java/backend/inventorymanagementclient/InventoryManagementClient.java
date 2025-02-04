@@ -92,15 +92,4 @@ public class InventoryManagementClient {
         String request = handler.formatRequest("TEST", args);
         return handler.handleRequest(request);
     }
-    
-    
-    
-    
-    
-    
-    // Main
-    public static void main(String[] args) {
-        InventoryManagementClient management = new InventoryManagementClient();
-        management.start();
-    }
 }
