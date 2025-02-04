@@ -123,31 +123,34 @@ public class RequestHandlerServer {
     }
 
     private void processMessages() {
-        while (true) {
-            try {
-                // Extraer y procesar la petición en orden de llegada
-                ClientRequest request = messageQueue.take();
-                String clientMessage = request.getMessage();
-                Socket clientSocket = request.getClientSocket();
-                DataOutputStream outputStream = request.getOutputStream();
+    while (true) {
+        try {
+            // Extraer y procesar la petición en orden de llegada
+            ClientRequest request = messageQueue.take();
+            String clientMessage = request.getMessage();
+            SSLSocket clientSocket = (SSLSocket) request.getClientSocket();  // Correcto tipo de socket
+            DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream());
 
-                // Simulación del procesamiento del mensaje
-                String response = handleRequest(clientMessage);
-                System.out.println("Processing message: " + clientMessage + " -> Response: " + response);
+            // Procesar el mensaje recibido
+            String response = handleRequest(clientMessage);
+            System.out.println("Processing message: " + clientMessage + " -> Response: " + response);
 
-                // Enviar respuesta al cliente
-                outputStream.writeUTF(response);
-                outputStream.flush();
+            // Enviar respuesta al cliente
+            outputStream.writeUTF(response);
+            outputStream.flush();  // Asegúrate de limpiar el buffer antes de cerrar la conexión
 
-                // Cerrar la conexión después de enviar la respuesta
-                clientSocket.close();
-                System.out.println("Connection closed");
+            // Cerrar la conexión después de enviar la respuesta
+            outputStream.close();
+            clientSocket.close();
+            System.out.println("Connection closed");
 
-            } catch (IOException ex) {
-                System.out.println("Error processing message: " + ex.getMessage());
-            } catch (InterruptedException ex) {
-                Logger.getLogger(RequestHandlerServer.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        } catch (IOException ex) {
+            System.out.println("Error processing message: " + ex.getMessage());
+        } catch (InterruptedException ex) {
+            Logger.getLogger(RequestHandlerServer.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+}
+
     }
 }

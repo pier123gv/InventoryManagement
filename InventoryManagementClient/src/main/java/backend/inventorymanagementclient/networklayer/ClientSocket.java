@@ -54,6 +54,7 @@ public class ClientSocket {
         
         SSLSocketFactory socketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
         clientSocket = (SSLSocket) socketFactory.createSocket(serverAddress, port);
+        clientSocket.setSoTimeout(30000);
         System.out.println("Connection established");
         inputStream = new DataInputStream(clientSocket.getInputStream());
         outputStream = new DataOutputStream(clientSocket.getOutputStream());
@@ -67,6 +68,10 @@ public class ClientSocket {
             outputStream.writeUTF(jsonMessage);
             response = inputStream.readUTF();
             System.out.println("Response: " + response);
+        } catch (java.net.SocketTimeoutException ex) {
+            System.out.println("Timeout waiting for server response: " + ex.getMessage());      
+        } catch (java.io.EOFException ex) {
+            System.out.println("Server closed connection unexpectedly: " + ex.getMessage());
         } catch (IOException ex) {
             System.out.println("Client error: " + ex.getMessage());
         } finally {
