@@ -28,7 +28,7 @@ public class CSVUtils {
     
     public boolean exportCSV() {
         try (FileWriter writer = new FileWriter(filePath)) {
-            writer.append(management.getDb().toString());
+            writer.append(management.getDB().toString());
             return true;
         } catch (IOException ex) {
             Logger.getLogger(CSVUtils.class.getName()).log(Level.SEVERE, null, ex);

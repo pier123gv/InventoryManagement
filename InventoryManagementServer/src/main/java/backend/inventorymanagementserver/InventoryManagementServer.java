@@ -6,7 +6,6 @@ package backend.inventorymanagementserver;
 
 import backend.inventorymanagementserver.model.ProductDatabase;
 import backend.inventorymanagementserver.networklayer.RequestHandlerServer;
-import backend.inventorymanagementserver.userinterface.CommandLineInterface;
 import backend.inventorymanagementserver.utils.CSVUtils;
 
 /**
@@ -16,17 +15,15 @@ import backend.inventorymanagementserver.utils.CSVUtils;
 public class InventoryManagementServer {
     private final int port = 9090;
     private ProductDatabase db;
-    private CommandLineInterface ui;
     private CSVUtils exporter;
     private String fileName = "database.csv";
     private RequestHandlerServer handler;
     public InventoryManagementServer() {
         db = new ProductDatabase();
-        ui = new CommandLineInterface(this);
         exporter = new CSVUtils(this,fileName);
         db.populate(exporter.readCSVToString());
         handler = new RequestHandlerServer(this, port);
-        handler.start();
+
     }
     
     public boolean exportCSV() {
@@ -34,8 +31,7 @@ public class InventoryManagementServer {
     }
     
     public void start(){
-        Thread uiThread = new Thread(ui);
-        uiThread.start();
+        handler.start();
     }
     
     
@@ -46,12 +42,14 @@ public class InventoryManagementServer {
     public boolean deleteProductInDB(Object productKey){
         return db.deleteProduct(productKey);
     }
-
-    public ProductDatabase getDb() {
-        return db;
+    public String sellProductInDBbyName(String productName, int sellAmount){
+        return db.sellProductByName(productName, sellAmount);
     }
-    public boolean editProductInDB (Object key,String productName, int productStock, float productPrice, String productDescription){
-        return db.editProduct(key,productName,productStock,productPrice,productDescription);
+    public String sellProductInDBbyCode(int productCode, int sellAmount){
+        return db.sellProductByCode(productCode,sellAmount);
+    }
+    public String editProductInDB (int productCode, String newProductName, int newProductStock, float newProductPrice, String newProductDescription){
+        return db.editProduct(productCode, newProductName, newProductStock, newProductPrice, newProductDescription);
     }
     public String showDatabaseContent(){
         return db.toStringLineJump(); //temporarily with line jumps.
@@ -59,6 +57,9 @@ public class InventoryManagementServer {
 
     public String testConnection(){
         return "Connection successfull";
+    }
+    public ProductDatabase getDB(){
+        return this.db;
     }
     // Main
     public static void main(String[] args) {

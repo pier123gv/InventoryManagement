@@ -72,4 +72,12 @@ public class Product {
         productStock += restockAmount;
         return true;
     }
+    
+    public String sellProduct(int sellAmount){
+        if(productStock>=sellAmount){
+            productStock-=sellAmount;
+            return "SUCCESS";
+        }
+        return "INSUFICIENT STOCK ERROR";
+    }
 }

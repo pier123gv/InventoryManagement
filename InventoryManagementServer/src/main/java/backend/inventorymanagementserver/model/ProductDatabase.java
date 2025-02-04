@@ -65,7 +65,18 @@ public class ProductDatabase {
         Inventory.add(new Product(lastProductCode()+1,productName,productStock, productPrice, productDescription));
         return "SUCCESS";
     }
-
+    
+    public String sellProductByName(String productName, int sellAmount){
+        int index = lookupProduct(productName);
+        if(index ==-1) return "PRODUCTO INEXISTENTE";
+        return Inventory.get(index).sellProduct(sellAmount);
+    }
+    
+    public String sellProductByCode(int productCode, int sellAmount){
+        int index = lookupProduct(productCode);
+        if(index ==-1) return "PRODUCTO INEXISTENTE";
+        return Inventory.get(index).sellProduct(sellAmount);
+    }
     public ArrayList<Product> getInventory() {
         return Inventory;
     }
@@ -80,10 +91,10 @@ int productIndex = lookupProduct(key);
     return true;
     }
     
-public boolean editProduct(Object key, String newName, Integer newStock, Float newPrice, String newDescription) {
-    int productIndex = lookupProduct(key);
+public String editProduct(int productCode, String newName, Integer newStock, Float newPrice, String newDescription) {
+    int productIndex = lookupProduct(productCode);
     
-    if (productIndex == -1) return false; // Producto no encontrado
+    if (productIndex == -1) return "PRODUCTO INEXISTENTE"; // Producto no encontrado
 
     Product product = Inventory.get(productIndex);
     
@@ -100,7 +111,7 @@ public boolean editProduct(Object key, String newName, Integer newStock, Float n
         product.setProductDescription(newDescription);
     }
 
-    return true;
+    return "SUCCESS";
 }
 
     @Override

@@ -36,13 +36,26 @@ public class RequestHandlerServer {
                 productDescription = jsonRequest.getString("argument3");
                 response = management.addProductToDB(productName, productStock, productPrice, productDescription);
                 break;
-            case "SELL":
+            case "SELLBYCODE":
                 productCode = Integer.parseInt(jsonRequest.getString("argument0"));
                 productAmount = Integer.parseInt(jsonRequest.getString("argument1"));
-                response = "NOT IMPLEMENTED YET";
+                response = management.sellProductInDBbyCode(productCode, productAmount);
+                break;
+            case "SELLBYNAME":
+                productName = jsonRequest.getString("argument0");
+                productAmount = Integer.parseInt(jsonRequest.getString("argument1"));
+                response = management.sellProductInDBbyName(productName, productAmount);
+                break;
+            case "EDIT":
+                productCode = Integer.parseInt(jsonRequest.getString("argument0"));
+                productName = jsonRequest.getString("argument1");
+                productStock = Integer.parseInt(jsonRequest.getString("argument2"));
+                productPrice = Float.parseFloat(jsonRequest.getString("argument3"));
+                productDescription = jsonRequest.getString("argument4");
+                response = management.editProductInDB(productCode, productName, productStock, productPrice, productDescription);
                 break;
             case "RESTOCK":
-                //result = management.addProductToDB(Integer.parseInt(fields[0]),fields[1].replace("##",","),Integer.parseInt(fields[2]));
+                response = management.showDatabaseContent();
                 break;
             case "TEST":
                 response = management.testConnection();
