@@ -68,7 +68,12 @@ public class InventoryManagementClient {
         return handler.handleRequest(request);
     }
     
-    public String requestDB (int productCode){
+    public String requestProductfromDB (int productCode){
+        String[] args = {""+productCode};
+        String request = handler.formatRequest("REQUESTPRODUCT", args);
+        return handler.handleRequest(request);
+    }
+    public String requestDB (){
         String[] args = {};
         String request = handler.formatRequest("REQUEST", args);
         return handler.handleRequest(request);

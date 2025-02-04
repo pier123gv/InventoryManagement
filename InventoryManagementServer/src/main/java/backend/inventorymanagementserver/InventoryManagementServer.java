@@ -54,6 +54,9 @@ public class InventoryManagementServer {
     public String showDatabaseContent(){
         return db.toStringLineJump(); //temporarily with line jumps.
     }
+    public String searchProductInDatabase(int productCode){
+        return db.productInfo(productCode);
+    }
 
     public String testConnection(){
         return "Connection successfull";

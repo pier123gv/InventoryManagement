@@ -54,8 +54,12 @@ public class RequestHandlerServer {
                 productDescription = jsonRequest.getString("argument4");
                 response = management.editProductInDB(productCode, productName, productStock, productPrice, productDescription);
                 break;
-            case "RESTOCK":
+            case "REQUEST":
                 response = management.showDatabaseContent();
+                break;
+            case "REQUESTPRODUCT":
+                productCode = Integer.parseInt(jsonRequest.getString("argument0"));
+                response = management.searchProductInDatabase(productCode);
                 break;
             case "TEST":
                 response = management.testConnection();

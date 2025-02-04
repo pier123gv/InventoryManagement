@@ -129,20 +129,23 @@ public String editProduct(int productCode, String newName, Integer newStock, Flo
         System.out.println("Populating db");
         String data[] = content.split(",");
         for(int i = 0; i<data.length & data.length>=5; i=i+5){
-          try {
-            int productCode = Integer.parseInt(data[i].trim()); 
-            String productName = data[i + 1].trim().replace("##", ","); 
-            int productStock = Integer.parseInt(data[i + 2].trim());
-            float productPrice = Float.parseFloat(data[i + 3].trim()); 
-            String productDescription = data[i + 4].trim().replace("##", ","); 
-
-            // Crear y agregar el producto
-            Product newProduct = new Product(productCode, productName, productStock, productPrice, productDescription);
-            Inventory.add(newProduct);
-        }catch (NumberFormatException e) {
-            System.out.println("Error al procesar el producto en la línea: " + (i / 5 + 1));        
-        }
+            try {
+                int productCode = Integer.parseInt(data[i].trim()); 
+                String productName = data[i + 1].trim().replace("##", ","); 
+                int productStock = Integer.parseInt(data[i + 2].trim());
+                float productPrice = Float.parseFloat(data[i + 3].trim()); 
+                String productDescription = data[i + 4].trim().replace("##", ","); 
+                Product newProduct = new Product(productCode, productName, productStock, productPrice, productDescription);
+                Inventory.add(newProduct);
+            }catch (NumberFormatException e) {
+                System.out.println("Error al procesar el producto en la línea: " + (i / 5 + 1));        
+            }
         System.out.println("File lines: "+data.length/3 + " Entries: "+Inventory.size());
+        }
     }
-}
+    public String productInfo(int productCode){
+        int index = lookupProduct(productCode);
+        if(index ==-1) return "PRODUCTO INEXISTENTE";
+        return Inventory.get(index).toString();
+    }
 }
