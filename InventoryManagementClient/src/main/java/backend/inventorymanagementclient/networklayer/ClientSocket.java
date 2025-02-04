@@ -17,7 +17,7 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 /**
- *
+ *Clase para conectarse con el servidor
  * @author pier
  */
 public class ClientSocket {
@@ -32,7 +32,13 @@ public class ClientSocket {
         this.serverAddress = serverAddress;
         this.port = port;
     }
-
+    
+    /**
+    * Establece una conexión segura con el servidor usando SSL.
+    * Carga la configuración SSL desde `configuration.properties`, configura los 
+    * certificados y crea un `SSLSocket` para conectarse al servidor.
+    * @throws IOException Si ocurre un error al cargar la configuración o al conectar.
+    */
     public void connect() throws IOException {
         Properties p = new Properties();
         try {
@@ -59,7 +65,14 @@ public class ClientSocket {
         inputStream = new DataInputStream(clientSocket.getInputStream());
         outputStream = new DataOutputStream(clientSocket.getOutputStream());
     }
-
+    
+    /**
+    * Envía un mensaje JSON al servidor a través de una conexión SSL.
+    * Establece la conexión, envía el mensaje y espera una respuesta del servidor.
+    * Maneja excepciones de tiempo de espera, cierre inesperado y errores de E/S.
+    * @param jsonMessage El mensaje en formato JSON a enviar.
+    * @return La respuesta del servidor como una cadena de texto.
+    */
     public String sendMessage(String jsonMessage) {
         String response = "Error";
         try {
@@ -80,7 +93,12 @@ public class ClientSocket {
         }
         return response;
     }
-
+    
+    /**
+     * Cierra la conexión con el servidor.
+     * Libera los recursos asociados al socket y los flujos de entrada/salida.
+     * Maneja posibles errores al cerrar la conexión.
+     */
     public void closeConnection() {
         try {
             if (inputStream != null) {

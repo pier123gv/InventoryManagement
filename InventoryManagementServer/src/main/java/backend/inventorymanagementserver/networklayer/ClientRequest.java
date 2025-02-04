@@ -8,7 +8,7 @@ import java.io.DataOutputStream;
 import java.net.Socket;
 
 /**
- *
+ * 
  * @author pier
  */
 class ClientRequest {
@@ -21,7 +21,7 @@ class ClientRequest {
         this.clientSocket = clientSocket;
         this.outputStream = outputStream;
     }
-
+    
     public String getMessage() {
         return message;
     }

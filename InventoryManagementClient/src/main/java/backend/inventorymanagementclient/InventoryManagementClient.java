@@ -5,7 +5,6 @@
 package backend.inventorymanagementclient;
 
 import backend.inventorymanagementclient.networklayer.RequestHandlerClient;
-import backend.inventorymanagementclient.userinterface.ImprovedCommandLineInterface;
 import backend.inventorymanagementclient.utils.CSVExporter;
 
 /**
@@ -18,12 +17,10 @@ public class InventoryManagementClient {
     private final String serverAddress = "172.24.157.33";
     private final String fileName = "database.csv";
     
-    private ImprovedCommandLineInterface ui;
     private CSVExporter exporter;
     private RequestHandlerClient handler;
     
     public InventoryManagementClient() {
-        ui = new ImprovedCommandLineInterface(this);
         exporter = new CSVExporter(this,fileName);
         handler = new RequestHandlerClient(this,serverAddress,port);
         
@@ -33,11 +30,6 @@ public class InventoryManagementClient {
         String[] args = {};
         String productos = handler.formatRequest("REQUEST", args);
         return exporter.exportCSV(productos);
-    }
-    
-    public void start(){
-        Thread uiThread = new Thread(ui);
-        uiThread.start();
     }
     
     public String addProductToDB(String productName, int productStock, float productPrice, String productDescription){
