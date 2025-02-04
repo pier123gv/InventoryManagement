@@ -123,7 +123,10 @@ public String editProduct(String oldName, String newName, Integer newStock, Floa
 
     return "SUCCESS";
 }
-
+    /**
+     * Metodo 
+     * @return 
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
