@@ -23,9 +23,9 @@ public class RequestHandlerServer {
         logger = new LoggerServer("logfile.csv");
     }
     /**
-     * 
-     * @param jsonMessage
-     * @return 
+     * Metodo que se encarga de interpretar los mensajes que manda el cliente
+     * @param jsonMessage Recibe la comunicacion que mandó el cliente.
+     * @return El codigo de salida que resulta de la ejecucion de las operaciones requeridas
      */
     public String handleRequest(String jsonMessage) {
         String response = "ERROR", operation, productName, productDescription;
@@ -34,7 +34,8 @@ public class RequestHandlerServer {
         JSONObject jsonRequest;
         jsonRequest = new JSONObject(jsonMessage);
         operation = jsonRequest.getString("operation");
-        switch (operation) {
+        // Switch case que se encarga de interpretar que tiene que hacer el servidor
+        switch (operation) { 
             case "ADD":
                 productName = jsonRequest.getString("argument0");
                 productStock = Integer.parseInt(jsonRequest.getString("argument1"));
@@ -80,10 +81,10 @@ public class RequestHandlerServer {
         logger.createLogEntry(jsonMessage+", "+response);
         return response;
     }
+    
     /**
-     * Inicia el servidor SSL 
-     * @param jsonMessage
-     * @return 
+     * Importa los parametros necesarios e inicia el servidor SSl, si recibe una comunicacion entrante genera un 
+     * thread de handler para que se ejecute con la solicitud lo que se necesita, sin necesidad de dejar de escuchar en el 
      */
     public void start() {
         try {
