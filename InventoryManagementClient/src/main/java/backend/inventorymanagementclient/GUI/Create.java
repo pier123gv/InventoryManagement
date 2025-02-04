@@ -4,6 +4,9 @@
  */
 package backend.inventorymanagementclient.GUI;
 
+import backend.inventorymanagementclient.InventoryManagementClient;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author isabela
@@ -13,7 +16,8 @@ public class Create extends javax.swing.JFrame {
     /**
      * Creates new form Create
      */
-    public Create() {
+    public Create(VentanaPrincipal ventana) {
+        this.ventana = ventana;
         initComponents();
     }
 
@@ -55,6 +59,11 @@ public class Create extends javax.swing.JFrame {
         });
 
         BcreateProduct.setText("Crear");
+        BcreateProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BcreateProductActionPerformed(evt);
+            }
+        });
 
         Bback.setText("Atras");
         Bback.addActionListener(new java.awt.event.ActionListener() {
@@ -144,7 +153,6 @@ public class Create extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public void setVentana(VentanaPrincipal ventana){
-        this.ventana = ventana;
         ventana.setVisible(true);
         this.setVisible(false);
     }
@@ -183,40 +191,40 @@ public class Create extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_TcantidadKeyTyped
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void BcreateProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BcreateProductActionPerformed
+String nombre = TnameProduct.getText().trim();
+        String precioTexto = Tprecio.getText().trim();
+        String cantidadTexto = Tcantidad.getText().trim();
+        String descripcion = Tdescription.getText().trim();
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Create().setVisible(true);
-            }
-        });
-    }
+        // Validaciones
+        if (nombre.isEmpty() || precioTexto.isEmpty() || cantidadTexto.isEmpty() || descripcion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            int cantidad = Integer.parseInt(cantidadTexto);
+            float precio = Float.parseFloat(precioTexto);
+
+            // Obtener el InventoryManagementClient desde la VentanaPrincipal
+            InventoryManagementClient inventoryManagementClient = ventana.getManagementClient();
+
+            // Llamar al método para agregar el producto a la base de datos
+            String respuesta = inventoryManagementClient.addProductToDB(nombre, cantidad, precio, descripcion);
+
+            // Mostrar la respuesta del servidor (en este caso, la simulación de la inserción)
+            JOptionPane.showMessageDialog(this, respuesta, "Respuesta del Servidor", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Cantidad y precio deben ser valores numéricos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        finally{
+            this.setVisible(false);
+            ventana.setVisible(true);
+        }
+    }//GEN-LAST:event_BcreateProductActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Bback;
