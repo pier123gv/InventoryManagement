@@ -60,9 +60,10 @@ public class ProductDatabase {
      * @param amount The new product's amount.
      * @return True if the entry was successful, False otherwise. 
      */
-    public boolean addProduct(String productName, int productStock, float productPrice, String productDescription){
-        if(searchProductCode(productName) !=-1) return false;
-        return Inventory.add(new Product(lastProductCode()+1,productName,productStock, productPrice, productDescription));
+    public String addProduct(String productName, int productStock, float productPrice, String productDescription){
+        if(searchProductCode(productName) !=-1) return "PRODUCTO EXISTENTE";
+        Inventory.add(new Product(lastProductCode()+1,productName,productStock, productPrice, productDescription));
+        return "SUCCESS";
     }
 
     public ArrayList<Product> getInventory() {

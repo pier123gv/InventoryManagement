@@ -39,7 +39,7 @@ public class InventoryManagementServer {
     }
     
     
-    public boolean addProductToDB(String productName, int productStock, float productPrice, String productDescription){
+    public String addProductToDB(String productName, int productStock, float productPrice, String productDescription){
         return db.addProduct(productName,productStock,productPrice,productDescription);
     }
     

@@ -6,7 +6,13 @@ package backend.inventorymanagementclient.networklayer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
@@ -28,6 +34,24 @@ public class ClientSocket {
     }
 
     public void connect() throws IOException {
+        Properties p = new Properties();
+        try {
+            p.load(new FileInputStream(new File("configuration.properties")));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ClientSocket.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientSocket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String sslRoute = p.getProperty("SSL_CERTIFICATE_ROUTE");
+        String sslPassword = p.getProperty("SSL_PASSWORD");
+        System.setProperty("javax.net.ssl.keyStore",sslRoute);
+        System.setProperty("javax.net.ssl.keyStorePassword",sslPassword);
+        System.setProperty("javax.net.ssl.keyStoreType", "PKCS12");
+        System.setProperty("javax.net.ssl.trustStore", sslRoute);
+        System.setProperty("javax.net.ssl.trustStorePassword", sslPassword);
+        System.setProperty("javax.net.ssl.trustStoreType", "PKCS12");
+        
         SSLSocketFactory socketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
         clientSocket = (SSLSocket) socketFactory.createSocket(serverAddress, port);
         System.out.println("Connection established");

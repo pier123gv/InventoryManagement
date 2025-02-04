@@ -15,7 +15,7 @@ import backend.inventorymanagementclient.utils.CSVExporter;
 public class InventoryManagementClient {
     
     private final int port = 9090;
-    private final String serverAddress = "";
+    private final String serverAddress = "172.24.12.205";
     private final String fileName = "database.csv";
     
     private ImprovedCommandLineInterface ui;

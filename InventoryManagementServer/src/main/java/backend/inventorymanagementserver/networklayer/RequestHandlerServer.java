@@ -39,25 +39,26 @@ public class RequestHandlerServer {
     }
 
     public String handleRequest(String jsonMessage){
-        String response = "Error", operation, arguments;
-        String [] fields;
+        String response = "ERROR", operation, productName, productDescription;
+        int productCode,productStock, productAmount;
+        float productPrice;
         JSONObject jsonRequest;
         jsonRequest = new JSONObject(jsonMessage);
             operation = jsonRequest.getString("operation");
             switch (operation) { 
                 case "ADD":
-                    arguments = jsonRequest.getString("arguments");
-                    fields = arguments.split(",");
-                    //response = management.addProductToDB(Integer.parseInt(fields[0]),fields[1].replace("##",","),Integer.parseInt(fields[2]));
+                    productName = jsonRequest.getString("argument0");
+                    productStock = Integer.parseInt(jsonRequest.getString("argument1"));
+                    productPrice = Float.parseFloat(jsonRequest.getString("argument2"));
+                    productDescription = jsonRequest.getString("argument3");
+                    response = management.addProductToDB(productName,productStock,productPrice,productDescription);
                 break;
                 case "SELL":
-                    arguments = jsonRequest.getString("arguments");
-                    fields = arguments.split(",");
-                    //result = management.addProductToDB(Integer.parseInt(fields[0]),fields[1].replace("##",","),Integer.parseInt(fields[2]));
+                    productCode = Integer.parseInt(jsonRequest.getString("argument0"));
+                    productAmount = Integer.parseInt(jsonRequest.getString("argument1"));
+                    response = "NOT IMPLEMENTED YET";
                 break;
                 case "RESTOCK":
-                    arguments = jsonRequest.getString("arguments");
-                    fields = arguments.split(",");
                     //result = management.addProductToDB(Integer.parseInt(fields[0]),fields[1].replace("##",","),Integer.parseInt(fields[2]));
                 break;
                 case "TEST":
