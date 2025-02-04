@@ -89,7 +89,7 @@ public class ImprovedCommandLineInterface implements Runnable {
     }
 
     private void displayInventory() {
-        String inventoryData = management.requestDB(0);  // Ajusta según el formato de retorno esperado
+        String inventoryData = management.requestDB();
         System.out.println("\nCurrent Inventory:\n" + inventoryData);
     }
 
