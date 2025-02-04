@@ -4,16 +4,21 @@
  */
 package backend.inventorymanagementclient.GUI;
 
+import backend.inventorymanagementclient.InventoryManagementClient;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author isabela
  */
 public class Edit extends javax.swing.JFrame {
     public VentanaPrincipal ventana;
+    String oldName;
     /**
      * Creates new form Edit
      */
-    public Edit() {
+    public Edit(String oldName) {
+        this.oldName = oldName;
         initComponents();
     }
     
@@ -38,7 +43,7 @@ public class Edit extends javax.swing.JFrame {
         Tname = new javax.swing.JTextField();
         Tprice = new javax.swing.JTextField();
         Tcantidad = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        Bedit = new javax.swing.JButton();
         Bback = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -86,10 +91,10 @@ public class Edit extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Editar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Bedit.setText("Editar");
+        Bedit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BeditActionPerformed(evt);
             }
         });
 
@@ -117,7 +122,7 @@ public class Edit extends javax.swing.JFrame {
                             .addComponent(Tcantidad)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(163, 163, 163)
-                        .addComponent(jButton1)
+                        .addComponent(Bedit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Bback))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -143,7 +148,7 @@ public class Edit extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(Bedit)
                     .addComponent(Bback))
                 .addContainerGap(52, Short.MAX_VALUE))
         );
@@ -165,9 +170,43 @@ public class Edit extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_TcantidadActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void BeditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BeditActionPerformed
+       String newName = Tname.getText().trim();
+       String newDescription = Tdescription.getText().trim();
+       String newStockStr = Tcantidad.getText().trim();
+       String newPriceStr = Tprice.getText().trim();
+
+       // Validar los campos antes de enviar la solicitud
+       if (newName.isEmpty() || newDescription.isEmpty() || newStockStr.isEmpty() || newPriceStr.isEmpty()) {
+           JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos.", "Error", JOptionPane.ERROR_MESSAGE);
+           return;
+       }
+
+       int newStock;
+       float newPrice;
+       try {
+           newStock = Integer.parseInt(newStockStr);
+           newPrice = Float.parseFloat(newPriceStr);
+       } catch (NumberFormatException e) {
+           JOptionPane.showMessageDialog(this, "Stock y precio deben ser valores numéricos.", "Error", JOptionPane.ERROR_MESSAGE);
+           return;
+       }
+       
+       InventoryManagementClient client = new InventoryManagementClient();
+
+       // Llamar a la función modifyProductNameInDB
+       String response = client.modifyProductNameInDB(oldName, newName, newStock, newPrice, newDescription);
+
+       // Mostrar mensaje de éxito o error
+       if (response.startsWith("SUCCESS")) {
+           JOptionPane.showMessageDialog(this, "Producto modificado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+       } else {
+           JOptionPane.showMessageDialog(this, "Error al modificar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+       }
+       ventana.setVisible(true);
+        this.setVisible(false);         
+                
+    }//GEN-LAST:event_BeditActionPerformed
 
     private void BbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BbackActionPerformed
         ventana.setVisible(true);
@@ -188,48 +227,14 @@ public class Edit extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_TcantidadKeyTyped
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Edit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Edit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Edit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Edit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Edit().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Bback;
+    private javax.swing.JButton Bedit;
     private javax.swing.JTextField Tcantidad;
     private javax.swing.JTextArea Tdescription;
     private javax.swing.JTextField Tname;
     private javax.swing.JTextField Tprice;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

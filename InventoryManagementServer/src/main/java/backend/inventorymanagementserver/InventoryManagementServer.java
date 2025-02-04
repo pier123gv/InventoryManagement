@@ -51,8 +51,8 @@ public class InventoryManagementServer {
     public String sellProductInDBbyCode(int productCode, int sellAmount){
         return db.sellProductByCode(productCode,sellAmount);
     }
-    public String editProductInDB (int productCode, String newProductName, int newProductStock, float newProductPrice, String newProductDescription){
-        return db.editProduct(productCode, newProductName, newProductStock, newProductPrice, newProductDescription);
+    public String editProductInDB (String oldName, String newProductName, int newProductStock, float newProductPrice, String newProductDescription){
+        return db.editProduct(oldName, newProductName, newProductStock, newProductPrice, newProductDescription);
     }
     public String showDatabaseContent(){
         return db.toStringLineJump(); //temporarily with line jumps.

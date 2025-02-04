@@ -101,8 +101,8 @@ int productIndex = lookupProduct(key);
     return "SUCCESS";
     }
     
-public String editProduct(int productCode, String newName, Integer newStock, Float newPrice, String newDescription) {
-    int productIndex = lookupProduct(productCode);
+public String editProduct(String oldName, String newName, Integer newStock, Float newPrice, String newDescription) {
+    int productIndex = lookupProduct(oldName);
     
     if (productIndex == -1) return "PRODUCTO INEXISTENTE"; // Producto no encontrado
 

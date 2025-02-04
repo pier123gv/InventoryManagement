@@ -46,13 +46,13 @@ public class RequestHandlerServer {
                 productAmount = Integer.parseInt(jsonRequest.getString("argument1"));
                 response = management.sellProductInDBbyName(productName, productAmount);
                 break;
-            case "EDIT":
-                productCode = Integer.parseInt(jsonRequest.getString("argument0"));
+            case "MODIFY-PRODUCT":
+                String oldName = jsonRequest.getString("argument0");
                 productName = jsonRequest.getString("argument1");
                 productStock = Integer.parseInt(jsonRequest.getString("argument2"));
                 productPrice = Float.parseFloat(jsonRequest.getString("argument3"));
                 productDescription = jsonRequest.getString("argument4");
-                response = management.editProductInDB(productCode, productName, productStock, productPrice, productDescription);
+                response = management.editProductInDB(oldName, productName, productStock, productPrice, productDescription);
                 break;
             case "REQUEST":
                 response = management.showDatabaseContent();

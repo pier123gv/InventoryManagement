@@ -56,9 +56,9 @@ public class InventoryManagementClient {
         return handler.handleRequest(request);
     }
     
-    public String modifyProductNameInDB (int productCode, String newName){
-        String[] args = {String.valueOf(productCode),newName};
-        String request = handler.formatRequest("MODIFY-NAME", args);
+    public String modifyProductNameInDB ( String OldName, String productName, int productStock, float productPrice, String productDescription){
+        String[] args = {OldName, productName,String.valueOf(productStock),String.valueOf(productPrice), productDescription};
+        String request = handler.formatRequest("MODIFY-PRODUCT", args);
         return handler.handleRequest(request);
     }
     
