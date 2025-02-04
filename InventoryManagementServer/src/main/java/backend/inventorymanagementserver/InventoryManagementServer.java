@@ -37,25 +37,25 @@ public class InventoryManagementServer {
         uiThread.start();
     }
     
-    /*
-    public boolean addProductToDB(String productName, int productStock){
-        return db.addProduct(productName, productStock);
+    
+    public boolean addProductToDB(String productName, int productStock, float productPrice, String productDescription){
+        return db.addProduct(productName,productStock,productPrice,productDescription);
     }
     
-    public boolean sellProductInDB(Object productKey, int amount){
-        return db.sellProduct(productKey, amount);
+    public boolean deleteProductInDB(Object productKey){
+        return db.deleteProduct(productKey);
     }
 
     public ProductDatabase getDb() {
         return db;
     }
-    public boolean restockProductInDB (Object productKey, int amount){
-        return db.restockProduct(productKey, amount);
+    public boolean editProductInDB (Object key,String productName, int productStock, float productPrice, String productDescription){
+        return db.editProduct(key,productName,productStock,productPrice,productDescription);
     }
     public String showDatabaseContent(){
         return db.toStringLineJump(); //temporarily with line jumps.
     }
-*/
+
     public String testConnection(){
         return "Connection successfull";
     }

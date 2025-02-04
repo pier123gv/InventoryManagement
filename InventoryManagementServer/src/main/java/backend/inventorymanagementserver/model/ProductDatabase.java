@@ -69,7 +69,7 @@ public class ProductDatabase {
         return Inventory;
     }
     
-    public boolean Delete(Object key){ // Recieves either code or name
+    public boolean deleteProduct(Object key){ // Recieves either code or name
 int productIndex = lookupProduct(key);
     
     if (productIndex == -1) return false; // Producto no encontrado

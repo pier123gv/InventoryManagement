@@ -28,6 +28,8 @@ public class CommandLineInterface implements Runnable {
         int productStock, productCode;
         String productName;
         Object productKey;
+        float price;
+        String description;
         int choice2;
 
         switch (choice) {
@@ -36,7 +38,11 @@ public class CommandLineInterface implements Runnable {
                 productName = sc2.nextLine();
                 System.out.println("Enter new product's stock: ");
                 productStock = Integer.parseInt(sc2.nextLine());
-                management.addProductToDB(productName, productStock);
+                System.out.println("Enter new product's price: ");
+                price = Float.parseFloat(sc2.nextLine());
+                System.out.println("Enter new product's description: ");
+                description = sc2.nextLine();
+                management.addProductToDB(productName, productStock, price, description);
                 System.out.println("Product added successfully!");
                 return true;
             }
@@ -47,8 +53,7 @@ public class CommandLineInterface implements Runnable {
                 productKey = sc2.nextLine();
                 if (choice2 == 1) productKey = ((int)productKey);  // Correct conversion
                 System.out.println("Enter sell amount: ");
-                productStock = Integer.parseInt(sc2.nextLine());
-                boolean success = management.sellProductInDB(productKey, productStock);
+                boolean success = management.deleteProductInDB(productKey);
                 System.out.println(success ? "Product sold successfully!" : "Failed to sell product.");
                 return true;
             }
@@ -58,9 +63,15 @@ public class CommandLineInterface implements Runnable {
                 System.out.println("Enter product key (Name or Code): ");
                 productKey = sc2.nextLine();
                 if (choice2 == 1) productKey = ((int) productKey);  // Correct conversion
-                System.out.println("Enter additional product stock: ");
+                System.out.println("Enter product's new name: ");
+                productName = sc2.nextLine();
+                System.out.println("Enter  product's new stock: ");
                 productStock = Integer.parseInt(sc2.nextLine());
-                boolean success = management.restockProductInDB(productKey, productStock);
+                System.out.println("Enter product's new price: ");
+                price = Float.parseFloat(sc2.nextLine());
+                System.out.println("Enter product's new description: ");
+                description = sc2.nextLine();
+                boolean success = management.editProductInDB(productKey, productName,productStock,price,description );
                 System.out.println(success ? "Product restocked successfully!" : "Failed to restock product.");
                 return true;
             }

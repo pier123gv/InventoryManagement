@@ -132,7 +132,7 @@ public class Create extends javax.swing.JFrame {
                         .addGap(34, 34, 34)
                         .addComponent(Tcantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(BcreateProduct)
                     .addComponent(Bback))
                 .addGap(30, 30, 30))

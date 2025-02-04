@@ -38,13 +38,13 @@ public class InventoryManagementClient {
         uiThread.start();
     }
     
-    public String addProductToDB(String productName, int productStock){
-        String[] args = {productName,String.valueOf(productStock)};
+    public String addProductToDB(String productName, int productStock, float productPrice, String productDescription){
+        String[] args = {productName,String.valueOf(productStock),String.valueOf(productPrice), productDescription} ;
         String request = handler.formatRequest("ADD", args);
         return handler.handleRequest(request);
     }
     
-    public String sellProductInDB(int productCode, int amount){
+    public String deleteProductInDB(int productCode, int amount){
         String[] args = {String.valueOf(productCode),String.valueOf(amount)};
         String request = handler.formatRequest("SELL", args);
         return handler.handleRequest(request);

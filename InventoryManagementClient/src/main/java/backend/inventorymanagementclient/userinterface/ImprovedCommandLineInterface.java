@@ -33,7 +33,17 @@ public class ImprovedCommandLineInterface implements Runnable {
             }
         }
     }
-
+    
+    private float getFloatInput(String prompt) {
+    while (true) {
+        System.out.print(prompt);
+        try {
+            return Float.parseFloat(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Invalid input. Please enter a valid decimal number.");
+        }
+    }
+}
     private String getStringInput(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine();
@@ -58,15 +68,17 @@ public class ImprovedCommandLineInterface implements Runnable {
     private void addProduct() {
         String productName = getStringInput("Enter new product's name: ");
         int productStock = getIntInput("Enter new product's stock: ");
-        management.addProductToDB(productName, productStock);
+        float productPrice = getFloatInput("Enter price: ");
+        String description = getStringInput("Enter description: ");
+        management.addProductToDB(productName, productStock, productPrice, description);
         System.out.println("Product added successfully!");
     }
 
     private void sellProduct() {
         int productCode = getIntInput("Enter product code: ");
         int quantity = getIntInput("Enter quantity to sell: ");
-        String result = management.sellProductInDB(productCode, quantity);
-        System.out.println(result);
+        //String result = management.sellProductInDB(productCode, quantity);
+        //System.out.println(result);
     }
 
     private void restockProduct() {
