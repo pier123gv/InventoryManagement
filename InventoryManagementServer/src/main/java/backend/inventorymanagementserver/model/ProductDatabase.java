@@ -135,6 +135,11 @@ public String editProduct(String oldName, String newName, Integer newStock, Floa
         for(Product product : Inventory) sb.append(product.toString()+"\n");
         return sb.toString();
     }
+    /**
+     * Se encarga de popular la base de datos recibiendo el contenido separado por comas similar al formato csv
+     * Cambia las , que hay dentro de los argumentos que necesita un producto,ya que se convierten en ## cuando los vamos a guardar
+     * @param content recibe el contenido en String con formato csv
+     */
     public void populate(String content){
         System.out.println("Populating db");
         String data[] = content.split(",");
