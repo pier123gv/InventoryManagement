@@ -60,24 +60,47 @@ public class ProductDatabase {
      * @param amount The new product's amount.
      * @return True if the entry was successful, False otherwise. 
      */
-    public boolean addProduct(String productName, int productStock){
+    public boolean addProduct(String productName, int productStock, float productPrice, String productDescription){
         if(searchProductCode(productName) !=-1) return false;
-        return Inventory.add(new Product(lastProductCode()+1,productName,productStock));
+        return Inventory.add(new Product(lastProductCode()+1,productName,productStock, productPrice, productDescription));
     }
 
     public ArrayList<Product> getInventory() {
         return Inventory;
     }
     
-    public boolean sellProduct(Object key, int productAmount){ // Recieves either code or name
-        int productIndex = lookupProduct(key);
-        return (productIndex == -1) ? false : Inventory.get(productIndex).sellProduct(productAmount);
+    public boolean Delete(Object key){ // Recieves either code or name
+int productIndex = lookupProduct(key);
+    
+    if (productIndex == -1) return false; // Producto no encontrado
+
+    Inventory.remove(productIndex);
+
+    return true;
     }
     
-    public boolean restockProduct(Object key, int productAmount){ // Recieves either code or name
-        int productIndex = lookupProduct(key);
-        return (productIndex == -1) ? false : Inventory.get(productIndex).restock(productAmount);
+public boolean editProduct(Object key, String newName, Integer newStock, Float newPrice, String newDescription) {
+    int productIndex = lookupProduct(key);
+    
+    if (productIndex == -1) return false; // Producto no encontrado
+
+    Product product = Inventory.get(productIndex);
+    
+    if (newName != null && !newName.trim().isEmpty()) {
+        product.setProductName(newName);
     }
+    if (newStock != null && newStock >= 0) {
+        product. setProductStock(newStock);
+    }
+    if (newPrice != null && newPrice >= 0) {
+        product.setProductPrice(newPrice);
+    }
+    if (newDescription != null && !newDescription.trim().isEmpty()) {
+        product.setProductDescription(newDescription);
+    }
+
+    return true;
+}
 
     @Override
     public String toString() {
@@ -93,10 +116,21 @@ public class ProductDatabase {
     public void populate(String content){
         System.out.println("Populating db");
         String data[] = content.split(",");
-        for(int i = 0; i<data.length & data.length>=3; i=i+3){
-            Product newProduct = new Product(Integer.parseInt(data[i].trim()),data[i+1].trim().replace("##",","),Integer.parseInt(data[i+2].trim()));
+        for(int i = 0; i<data.length & data.length>=5; i=i+5){
+          try {
+            int productCode = Integer.parseInt(data[i].trim()); 
+            String productName = data[i + 1].trim().replace("##", ","); 
+            int productStock = Integer.parseInt(data[i + 2].trim());
+            float productPrice = Float.parseFloat(data[i + 3].trim()); 
+            String productDescription = data[i + 4].trim().replace("##", ","); 
+
+            // Crear y agregar el producto
+            Product newProduct = new Product(productCode, productName, productStock, productPrice, productDescription);
             Inventory.add(newProduct);
+        }catch (NumberFormatException e) {
+            System.out.println("Error al procesar el producto en la línea: " + (i / 5 + 1));        
         }
         System.out.println("File lines: "+data.length/3 + " Entries: "+Inventory.size());
     }
+}
 }

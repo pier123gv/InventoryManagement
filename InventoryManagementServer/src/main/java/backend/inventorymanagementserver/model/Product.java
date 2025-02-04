@@ -12,11 +12,15 @@ public class Product {
     private int productCode;
     private String productName;
     private int productStock;
-
-    public Product(int productCode, String productName, int productAmount) {
+    private String productDescription;
+    private float productPrice;
+    
+    public Product(int productCode, String productName, int productAmount, float productPrice, String productDescription) {
         this.productCode = productCode;
         this.productName = productName;
         this.productStock = productAmount;
+        this.productPrice = productPrice;
+        this.productDescription = productDescription;
     }
 
     public int getProductCode() {
@@ -26,20 +30,34 @@ public class Product {
     public String getProductName() {
         return productName;
     }
+    
+    public String getProductDescription() {
+        return productDescription;
+    }
 
     public int getProductStock() {
         return productStock;
     }
     
-    /**
-     * Sells the amount given if there's enough stock;
-     * @param sellAmount The amount to sell.
-     * @return True if it could be done, False otherwise
-     */
-    public boolean sellProduct(int sellAmount){
-        return sellAmount <= productStock && (productStock -= sellAmount) >= 0;
+    public int getProductPrice() {
+        return productCode;
     }
-    
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setProductStock(int productStock) {
+        this.productStock = productStock;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+    }
+
+    public void setProductPrice(float productPrice) {
+        this.productPrice = productPrice;
+    }
     /**
     * String representation of the product using the format code,name,amount 
     * and changing comas in the name for ## to bypass CSV confusion.
